@@ -1,12 +1,9 @@
 import React from "react";
-import "./style.css";
 
 function Home() {
-  return (
-    <div>
-      <h1>home</h1>
-    </div>
-  );
+  return <div>
+
+  </div>;
 }
 
 export default Home;
