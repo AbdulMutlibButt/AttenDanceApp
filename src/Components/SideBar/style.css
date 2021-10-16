@@ -1,7 +1,0 @@
-.SideBar{
-    display: flex;
-    flex-direction: column;
-    width: 13%;
-    height: 100vh;
-    background-color: hsl(0, 0%, 93%);
-}

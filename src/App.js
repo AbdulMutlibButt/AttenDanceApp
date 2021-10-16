@@ -1,11 +1,11 @@
 import React from "react";
+import 'antd/dist/antd.css';
 import "./App.css";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Login from "./Components/Login";
 import Home from './Components/Home'
 import MenuAppBar from "./Components/Header";
 import SideBar from "./Components/SideBar";
-
 
 function App() {
   return (
@@ -17,8 +17,8 @@ function App() {
           </Route>
           <Route path="/home">
             <MenuAppBar/>
-           <SideBar/>
             <Home/> 
+            <SideBar/>
           </Route>
           <Route path="/user">
 
