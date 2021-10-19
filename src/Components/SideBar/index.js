@@ -30,7 +30,7 @@ const history=useHistory()
         mode="inline"
       >
           <Menu.Item onClick={()=>history.push("/Teacher")} icon={<AdminPanelSettingsIcon />} key="1">
-            Teacher
+            Faculty
           </Menu.Item>
           <Divider/>
           <Menu.Item onClick={()=>history.push("/Student")} icon={<PeopleAltIcon />} key="2">
