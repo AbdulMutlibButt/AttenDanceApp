@@ -3,15 +3,17 @@ import "./style.css";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import { Modal, Button } from "antd";
 import { Form, Input } from "antd";
+import { DataGrid } from "@material-ui/data-grid";
 
 function CLasses() {
   const [visible, setVisible] = React.useState(false);
-  const [room, setRoom] = React.useState([]);
-  const [time, setTime] = React.useState([]);
-  const [id, setID] = React.useState([]);
-  const [subject, setSubject] = React.useState([]);
-  const [faculty, setFaculty] = React.useState([]);
+  const [room, setRoom] = React.useState("");
+  const [time, setTime] = React.useState("");
+  const [id, setID] = React.useState("");
+  const [subject, setSubject] = React.useState("");
+  const [faculty, setFaculty] = React.useState("");
   const [confirmLoading, setConfirmLoading] = React.useState(false);
+  const [data, setData] = React.useState([]);
 
   const showModal = () => {
     setVisible(true);
@@ -20,6 +22,8 @@ function CLasses() {
   const handleOk = () => {
     setConfirmLoading(true);
     setTimeout(() => {
+      setData([...data, { room, time, id, subject, faculty }]);
+
       setVisible(false);
       setConfirmLoading(false);
     }, 2000);
@@ -38,15 +42,51 @@ function CLasses() {
     console.log("Failed:", errorInfo);
   };
 
-  console.log(id);
-  console.log(subject);
-  console.log(room);
-  console.log(time);
-  console.log(faculty);
+  console.log(data);
+
+  const columns = [
+    { field: "id", headerName: "ID", width: 100 },
+    { field: "subject", headerName: "Subject", width: 130 },
+    {
+      field: "faculty",
+      headerName: "Faculty",
+      width: 130,
+    },
+    {
+      field: "time",
+      headerName: "Time",
+      type: "number",
+      width: 110,
+    },
+    {
+      field: "room",
+      headerName: "Room",
+      width: 120,
+    },
+  ];
+
+  const rows = data.map((val, id) => ({
+    id: val.id,
+    faculty: val.faculty,
+    subject: val.subject,
+    time: val.time,
+    room: val.room,
+  }));
 
   return (
     <div className="Classes">
+      <div style={{ height: 400, width: "70%" }}>
+        <DataGrid
+          rows={rows}
+          columns={columns}
+          pageSize={5}
+          rowsPerPageOptions={[5]}
+          checkboxSelection
+        />
+      </div>
+
       <Button
+        style={{ marginLeft: "8px" }}
         onClick={showModal}
         className="Classes__button"
         type="primary"
@@ -140,7 +180,7 @@ function CLasses() {
           </Form.Item>
 
           <Form.Item
-            style={{ width: "150%",marginBottom:-50 }}
+            style={{ width: "150%", marginBottom: -50 }}
             name="Room"
             rules={[
               {

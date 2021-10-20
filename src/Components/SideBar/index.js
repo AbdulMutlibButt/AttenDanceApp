@@ -24,7 +24,7 @@ const history=useHistory()
         onClick={(e) => {
           handleClick(e);
         }}
-        style={{ width: 200, height: "100vh", marginTop: -42 }}
+        style={{ width: 200, height: "100vh", marginTop: '-33.3%' }}
         defaultOpenKeys={["sub1"]}
         selectedKeys={select}
         mode="inline"

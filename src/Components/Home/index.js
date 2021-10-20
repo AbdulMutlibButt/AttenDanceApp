@@ -3,14 +3,16 @@ import "./style.css";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import { Modal, Button } from "antd";
 import { Form, Input } from "antd";
+import { DataGrid } from "@material-ui/data-grid";
 
 function Home() {
   const [visible, setVisible] = React.useState(false);
-  const [name, setName] = React.useState([]);
-  const [age, setAge] = React.useState([]);
-  const [role, setRole] = React.useState([]);
-  const [number, setNumber] = React.useState([]);
+  const [name, setName] = React.useState("");
+  const [age, setAge] = React.useState("");
+  const [role, setRole] = React.useState("");
+  const [number, setNumber] = React.useState("");
   const [confirmLoading, setConfirmLoading] = React.useState(false);
+  const [data, setData] = React.useState([]);
 
   const showModal = () => {
     setVisible(true);
@@ -19,6 +21,7 @@ function Home() {
   const handleOk = () => {
     setConfirmLoading(true);
     setTimeout(() => {
+      setData([...data, { name, age, role, number }]);
       setVisible(false);
       setConfirmLoading(false);
     }, 2000);
@@ -36,15 +39,51 @@ function Home() {
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
+  console.log(data);
 
-  console.log(name);
-  console.log(number);
-  console.log(role);
-  console.log(age);
+  const columns = [
+    { field: "id", headerName: "ID", width: 120 },
+    { field: "name", headerName: "Name", width: 130 },
+    {
+      field: "age",
+      headerName: "Age",
+      type: "number",
+      width: 120,
+    },
+    {
+      field: "number",
+      headerName: "Number",
+      type: "number",
+      width: 140,
+    },
+    {
+      field: "role",
+      headerName: "Role",
+      width: 120,
+    },
+  ];
 
+  const rows = data.map((val, id) => ({
+    id: id,
+    name: val.name,
+    age: val.age,
+    number: val.number,
+    role: val.role,
+  }));
   return (
     <div className="home">
+      <div style={{ height: 400, width: "70%" }}>
+        <DataGrid
+          rows={rows}
+          columns={columns}
+          pageSize={5}
+          rowsPerPageOptions={[5]}
+          checkboxSelection
+        />
+      </div>
+
       <Button
+        style={{ marginLeft: "10px" }}
         onClick={showModal}
         className="home__button"
         type="primary"
@@ -53,6 +92,7 @@ function Home() {
         <span style={{ marginRight: "5px" }}>Add Faculty</span>
         <AddCircleOutlineIcon fontSize="small" />{" "}
       </Button>
+
       <Modal
         title="Add Teacher"
         visible={visible}
@@ -103,10 +143,7 @@ function Home() {
               },
             ]}
           >
-            <Input
-              placeholder="Age"
-              onChange={(e) => setAge(e.target.value)}
-            />
+            <Input placeholder="Age" onChange={(e) => setAge(e.target.value)} />
           </Form.Item>
 
           <Form.Item
@@ -125,7 +162,7 @@ function Home() {
             />
           </Form.Item>
           <Form.Item
-            style={{ width: "150%",marginBottom:-50 }}
+            style={{ width: "150%", marginBottom: -50 }}
             name="Role"
             rules={[
               {

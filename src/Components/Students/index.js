@@ -3,15 +3,17 @@ import "./style.css";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import { Modal, Button, DatePicker } from "antd";
 import { Form, Input, Select } from "antd";
+import { DataGrid } from "@material-ui/data-grid";
 
 function Students() {
   const [visible, setVisible] = React.useState(false);
-  const [name, setName] = React.useState([]);
-  const [address, setAddress] = React.useState([]);
-  const [gender, setGender] = React.useState([]);
-  const [date, setDate] = React.useState([]);
-  const [number, setNumber] = React.useState([]);
+  const [name, setName] = React.useState("");
+  const [address, setAddress] = React.useState("");
+  const [gender, setGender] = React.useState("");
+  const [date, setDate] = React.useState("");
+  const [number, setNumber] = React.useState("");
   const [confirmLoading, setConfirmLoading] = React.useState(false);
+  const [data, setData] = React.useState([]);
 
   const showModal = () => {
     setVisible(true);
@@ -20,6 +22,7 @@ function Students() {
   const handleOk = () => {
     setConfirmLoading(true);
     setTimeout(() => {
+      setData([...data, { name, gender, address, number, date }]);
       setVisible(false);
       setConfirmLoading(false);
     }, 2000);
@@ -38,15 +41,56 @@ function Students() {
     console.log("Failed:", errorInfo);
   };
 
-  console.log(name);
-  console.log(number);
-  console.log(gender);
-  console.log(date);
-  console.log(address);
+  console.log(data);
+
+  const columns = [
+    { field: "id", headerName: "ID", width: 95 },
+    { field: "name", headerName: "Name", width: 120 },
+    {
+      field: "number",
+      headerName: "Number",
+      type: "number",
+      width: 130,
+    },
+    {
+      field: "address",
+      headerName: "Address",
+      width: 130,
+    },
+    {
+      field: "gender",
+      headerName: "Gender",
+      width: 130,
+    },
+    {
+      field: "date",
+      headerName: "Date Of Birth",
+      width: 300,
+    },
+  ];
+
+  const rows = data.map((val, id) => ({
+    id: id,
+    name: val.name,
+    number: val.number,
+    address: val.address,
+    date: val.date,
+    gender: val.gender,
+  }));
 
   return (
     <div className="Student">
+      <div style={{ height: 400, width: "70%" }}>
+        <DataGrid
+          rows={rows}
+          columns={columns}
+          pageSize={5}
+          rowsPerPageOptions={[5]}
+          checkboxSelection
+        />
+      </div>
       <Button
+        style={{ marginLeft: "8px" }}
         onClick={showModal}
         className="Student__button"
         type="primary"
@@ -56,7 +100,6 @@ function Students() {
         <AddCircleOutlineIcon fontSize="small" />{" "}
       </Button>
       <Modal
-      
         title="Add Student"
         visible={visible}
         onOk={handleOk}
@@ -126,16 +169,20 @@ function Students() {
             />
           </Form.Item>
           <Form.Item name="Gender" style={{ width: "150%" }}>
-            <Select onChange={(e)=> setGender(e.target.value)} placeholder="Gender">
+            <Select
+              onChange={(genders) => setGender(genders)}
+              placeholder="Gender"
+            >
               <Select.Option value="Male">Male</Select.Option>
               <Select.Option value="Female">Female</Select.Option>
             </Select>
           </Form.Item>
-          <Form.Item name="Date"
-          style={{marginBottom:-50}}
-          
-          >
-            <DatePicker onChange={(e)=> setDate(e.target.value)} style={{ width: "150%" }} placeholder="Date Of Birth" />
+          <Form.Item name="Date" style={{ marginBottom: -50 }}>
+            <DatePicker
+              onChange={(dates) => setDate(dates)}
+              style={{ width: "150%" }}
+              placeholder="Date Of Birth"
+            />
           </Form.Item>
           <Form.Item
             wrapperCol={{
